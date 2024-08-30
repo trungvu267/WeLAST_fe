@@ -36,6 +36,7 @@ function App() {
 
 	return (
 		<>
+			<h1 className="text-3xl font-bold text-center md:text-6xl md:mb-12 md:mt-6">FreeCodeCamp's Repositories</h1>
 			<LanguageCategoryTab categories={langCategories} />
 			<RepoDialog />
 		</>
