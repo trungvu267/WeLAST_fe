@@ -1,35 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+	import { useEffect, useState } from 'react'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+// services
+import fetchRepos from './services/fetch-repos'
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+// components
+import LanguageCategoryTab from './components/language-category-tab';
+import {  groupByLang } from './helpers';
+function App() {
+
+  const [loading, setLoading] = useState(false);
+  const [langCategories,setLangCategories]= useState<Category[]>([])
+
+  useEffect(() => {
+    const getRepos = async () => {
+      try {
+        setLoading(true); 
+        const res = await fetchRepos();
+		if(res?.length){
+			setLangCategories(groupByLang(res))
+		}
+      } catch (error) {
+        console.error("Error fetching repos:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getRepos();
+  }, []);
+  
+  if(loading && !langCategories) return <p>Loading...</p>
+
+  return <LanguageCategoryTab categories={langCategories}/>
 }
 
 export default App
