@@ -1,5 +1,6 @@
 import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { useSelectRepo } from "../stores";
+import Commit from "./commit";
 
 export default function RepoDialog() {
 	const { selectRepo, setSelectRepo } = useSelectRepo();
@@ -31,15 +32,19 @@ export default function RepoDialog() {
 							<p className="mt-2 text-sm/6 text-white/50">
 								{selectRepo?.description}
 							</p>
-							<div className="mt-2">
-								<p>Latest commit</p>
-							</div>
-							<div className="mt-4">
+							{selectRepo && <Commit selectRepo={selectRepo} />}
+							<div className="mt-4 flex flex-row items-center space-x-2">
 								<Button
 									className="inline-flex items-center gap-2 rounded-md bg-gray-700 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700"
 									onClick={close}
 								>
 									Got it, thanks!
+								</Button>
+								<Button
+									  className="inline-flex items-center gap-2 rounded-md bg-blue-500 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-lg shadow-blue-400/30 focus:outline-none data-[hover]:bg-blue-400 data-[focus]:outline-1 data-[focus]:outline-blue-500 data-[open]:bg-blue-500"
+									  onClick={() => window.open(selectRepo?.html_url)}
+									>
+									  Visit Repository
 								</Button>
 							</div>
 						</DialogPanel>
