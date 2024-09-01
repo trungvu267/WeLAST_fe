@@ -7,6 +7,7 @@ import fetchRepos from "./services/fetch-repos";
 // components
 import LanguageCategoryTab from "./components/language-category-tab";
 import RepoDialog from "./components/repo-dialog";
+import Loading from "./components/loading";
 
 // helpers
 import { groupByLang } from "./helpers";
@@ -32,12 +33,13 @@ function App() {
 		getRepos();
 	}, []);
 
-	if (loading && !langCategories) return <p>Loading...</p>;
-
+	
 	return (
 		<>
 			<h1 className="text-3xl font-bold text-center md:text-6xl md:mb-12 md:mt-6">FreeCodeCamp's Repositories</h1>
-			<LanguageCategoryTab categories={langCategories} />
+			{loading ? <Loading /> 
+			: <LanguageCategoryTab categories={langCategories} />
+			}
 			<RepoDialog />
 		</>
 	);
